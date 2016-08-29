@@ -21,13 +21,14 @@ Presentation
 
     Master {
         presentation: parent
+        textUnderIndicator: presentation.slides[presentation.currentSlide] === slideComp1 && slideComp1.currentStep === imgCol.sources.length*2+1
     }
 
     property var sections: [
         [ slideTitle ],
         [ slideAdvantages, slideObtain, slideWhat ],
-        [ slideCompQt3D, slideMockUp, slideCompCharts, slideComp1 ],
-        [ slideVr ]
+        [ slideAnimations, slideHeatmaps, slideCompQt3D, slideMockUp, slideCompCharts, slideComp1 ],
+        [ slideVr, slideEnd ]
     ]
 
     property var sectionHeaders: [
@@ -41,9 +42,13 @@ Presentation
         id: slideTitle
         //title: "Title & Introduction"
         textFormat: Text.RichText
-        centeredText: "<br><b>Presentations in Qml</b><br><br>Daniel Bulla, M. Eng.<br>FH Aachen University of applied science"
+        centeredText: "<br><b>Presentations in QML</b><br><br>Daniel Bulla, M. Eng.<br>FH Aachen University of Applied Sciences"
         // Hello my name is Daniel Bulla from FH Aachen University of applied sience and I want to share
-        // my experience about creating presentations in qml with you and talk about why it might enable
+        // my experience about creating presentations in qml with you.
+        // First I want to ask who did a presentation in qml in the past?
+        // Lot of hands: I hope I found some usecases which are new for you.
+        // Few hands: I think qml for presentations is a bit underuse for what it delivers. Maybe some of you consider using qml for their next presentation after this talk.
+        // And I will talk about why it might enable
         // us to take presenting in the future to a whole new level using new technology.
         // How did I come to Qml for presentations?
         // One year ago I did my Masterthesis, I've just written all my text in LaTeX, finished it, printed it
@@ -55,9 +60,13 @@ Presentation
         id: slideAdvantages
         title: "Characteristics"
         content: [
-            "freedom to add whatever I want to the presentation",
-            "clean and professional look",
-            "clean and professional way of creating it (efficient)"]
+            "Unrestricted freedom to add anything to slides",
+            " Animations",
+            " Bonus: interactive content",
+            "Efficient (easy) creation of slides",
+            "Clean and professional look",
+            " Exact positioning of elements",
+            "Clean and professional way of creating it"]
         // It was obvious to use LaTex, but I was unhappy with that because my professor is a very visual kind of person.
         // She wants a video in every presentation, a lot of pictures and I wanted to have slick animations, which help me to
         // give everyone an understanding of the algorithms I implemented. I used Powerpoint for this and it always got a mess when zooming pictures
@@ -66,7 +75,7 @@ Presentation
 
     Slide {
         id: slideObtain
-        title: "Where to obtain"
+        title: "Where can I get it?"//"Where to obtain"
         // I found the qml presentation framework in the qt-labs folder last year, this is not the case anymore you can obtain it from github now.
         // I even have my own fork where I basically added some components for reuse. I will come to them later.
         centeredText: "https://github.com/qt-labs/qml-presentation-system\n\nhttps://github.com/dabulla/qml-presentation-system"
@@ -81,7 +90,6 @@ Presentation
         content: [ "QML Components:",
                    " Presentation",
                    " Slide",
-                   "  content, centeredText, ...",
                    "Tutorial & Examples",
                    "\"printslides\"-Tool to create PDFs"
                    ]
@@ -133,6 +141,74 @@ Presentation
     // It was not that much effort because I could copy paste a lot of my shaders into the presentation.
     // If you want to present your qml application with this, this may also be the case for you. I heard about people
     // who put there complete application inside the presentation to discuss a prototype or mockup with their stakeholders.
+
+    Slide {
+        id: slideAnimations
+        title: "Doing animations"
+        // And since Qt 5.7 Qt Charts are also available for open source users and can be used in qml
+        CodeBlock {
+            anchors.fill: parent
+            anchors.leftMargin: -parent.width*0.01
+            anchors.bottomMargin: parent.height*0
+            anchors.topMargin: 0
+            anchors.rightMargin: parent.width*0.46
+            textColor: "black"
+            code:
+                "Slide {\n" +
+                "    id: theSlide\n" +
+                "    Image {\n" +
+                "       width: theSlide.width\n" +
+                "           * (theSlide.currentStep === 1 ? 1.0 : 0.5)\n" +
+                "    }\n" +
+                "    Behaviour on width {\n" +
+                "        NumberAnimation {\n" +
+                "            duration: 500\n" +
+                "            easing.type: Easing.InOutQuad\n" +
+                "        }\n" +
+                "    }\n" +
+                "}"
+        }
+        CodeBlock {
+            anchors.fill: parent
+            anchors.leftMargin: parent.width*0.55
+            anchors.topMargin: parent.height*0.0
+            anchors.rightMargin: -parent.width*0.01
+            textColor: "black"
+            code:
+                "states: [\n" +
+                "    State {\n" +
+                "        name: \"fullscreen\"\n" +
+                "        when: theSlide.currentStep === 1\n" +
+                "        PropertyChanges {\n" +
+                "            target: myImage\n" +
+                "            width: theSlide.width\n" +
+                "        }\n" +
+                "    }, ...\n" +
+                "]\n" +
+                "transitions: [\n" +
+                "    Transition {\n" +
+                "        from: \"preview\"\n" +
+                "        to: \"fullscreen\"\n" +
+                "        SequentialAnimation {\n" +
+                "            PauseAnimation { duration: 500 }\n" +
+                "            NumberAnimation {\n" +
+                "                duration: 500\n" +
+                "                target: myImage\n" +
+                "                properties: \"width, height\"\n" +
+                "                easing.type: Easing.InOutQuad\n" +
+                "            }\n" +
+                "        }\n" +
+                "    },\n" +
+                "    ...\n" +
+                "]\n"
+        }
+    }
+
+    DatapointSlide {
+        id: slideHeatmaps
+        showCode: true
+    }
+
     Slide {
         id: slideCompQt3D
         // Last year, when I did the presentation for my thesis I wanted to show 3D graphics and so I hacked some basic effects into my presentation using shaders.
@@ -343,9 +419,9 @@ Presentation
 //            }
         }
         ChartView {
-            title: "We learn"
+            title: "% we learn from..."
             y: parent.height * 0.3
-            width: height //parent.width * 0.5
+            width: parent.width * 0.4
             height: parent.height * 0.7
             legend.alignment: Qt.AlignBottom
             antialiasing: true
@@ -392,22 +468,18 @@ Presentation
             step: slideComp1.currentStep%2 === 1 ? (slideComp1.currentStep-1)/2 : -1
         }
         function advanceStep() {
-            return currentStep < imgCol.sources.length*2;
+            return currentStep < imgCol.sources.length*2+1;
         }
     }
-//    Slide {
-//        id: slideCharts
-//        // And since Qt 5.7 Qt Charts are also available for open source users and can be used in qml
-//    }
 
     Slide {
         id: slideVr
         title: "Presentations in virtual spaces"
-        content: ["interact with your presentation on stage",
-                  "haptic communication channel",
-                  "need for new dataformats",
-                  " basic programmability",
-                  " still efficient to create slides" ]
+        content: ["Interact with your presentation on stage",
+                  "Haptic communication channel",
+                  "Need for new dataformats",
+                  " Basic programmability",
+                  " Still efficient to create slides" ]
         Image {
             anchors.right: parent.right
             anchors.bottom: parent.bottom

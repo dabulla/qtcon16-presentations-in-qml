@@ -27,7 +27,7 @@ Presentation
     property var sections: [
         [ slideTitle ],
         [ slideAdvantages, slideObtain, slideWhat ],
-        [ slideAnimations, slideHeatmaps, slideCompQt3D, slideMockUp, slideCompCharts, slideComp1 ],
+        [ /*slideAnimations,*/ slideHeatmaps, slideCompQt3D, slideMockUp, slideCompCharts, slideComp1 ],
         [ slideVr, slideEnd ]
     ]
 
@@ -45,11 +45,14 @@ Presentation
         centeredText: "<br><b>Presentations in QML</b><br><br>Daniel Bulla, M. Eng.<br>FH Aachen University of Applied Sciences"
         // Hello my name is Daniel Bulla from FH Aachen University of applied sience and I want to share
         // my experience about creating presentations in qml with you.
-        // First I want to ask who did a presentation in qml in the past?
-        // Lot of hands: I hope I found some usecases which are new for you.
-        // Few hands: I think qml for presentations is a bit underuse for what it delivers. Maybe some of you consider using qml for their next presentation after this talk.
-        // And I will talk about why it might enable
-        // us to take presenting in the future to a whole new level using new technology.
+        // First I want to ask who knows about the possibility to create presentations in qml?
+        // And who did at least one presentation in qml?
+        // The community for presenting in qml is not that big yet, let's change that!
+        //// First I want to ask who did a presentation in qml in the past?
+        //// Lot of hands: I hope I found some usecases which are new for you.
+        //// Few hands: I think qml for presentations is a bit underuse for what it delivers. Maybe some of you consider using qml for their next presentation after this talk.
+        //// And I will talk about why it might enable
+        //// us to take presenting in the future to a whole new level using new technology.
         // How did I come to Qml for presentations?
         // One year ago I did my Masterthesis, I've just written all my text in LaTeX, finished it, printed it
         // still had two weeks to prepare my a presentation to show my work to my professor. For me the question arised, which technology I
@@ -60,70 +63,115 @@ Presentation
         id: slideAdvantages
         title: "Characteristics"
         content: [
-            "Unrestricted freedom to add anything to slides",
-            " Animations",
-            " Bonus: interactive content",
+            "Freedom to add anything to slides",
+//            " Animations",
+//            " Bonus: interactive content",
             "Efficient (easy) creation of slides",
             "Clean and professional look",
-            " Exact positioning of elements",
             "Clean and professional way of creating it"]
         // It was obvious to use LaTex, but I was unhappy with that because my professor is a very visual kind of person.
         // She wants a video in every presentation, a lot of pictures and I wanted to have slick animations, which help me to
-        // give everyone an understanding of the algorithms I implemented. I used Powerpoint for this and it always got a mess when zooming pictures
+        // give everyone an understanding of the algorithms I implemented. I used Powerpoint for this in the past and it always got a mess when zooming pictures
         // or something.
     }
 
-    Slide {
-        id: slideObtain
-        title: "Where can I get it?"//"Where to obtain"
-        // I found the qml presentation framework in the qt-labs folder last year, this is not the case anymore you can obtain it from github now.
-        // I even have my own fork where I basically added some components for reuse. I will come to them later.
-        centeredText: "https://github.com/qt-labs/qml-presentation-system\n\nhttps://github.com/dabulla/qml-presentation-system"
+    // I brought one example of these animated slides. TODO: Introduce master thesis topic shortly
+    DatapointSlide {
+        id: slideHeatmaps
+        showCode: true
     }
 
     Slide {
-        id: slideWhat
-        title: "What you get"
-        // What you basically get is the two classes "Presentation" and "Slide". "Slide" has implementation for 90% of the slides you will ever need.
-        // You can show centered text, nested bullet points and even codeblocks with it.
-        // Bulletpoints is just an array of text which will adapt it's size and wordwrapping automatically.
-        textFormat: Text.RichText
-        content: [ "Presentation Component",
-                   "Slide Component",
-                   " content, centeredText, ...",
-                   "Tutorial & Examples",
-                   "<it>printslides</it> to create PDFs"
-                   ]
-        contentWidth: parent.width * 0.35
-        CodeBlock {
+        id: slideMockUp
+        title: "QML Applications"
+        delayPoints: true
+        showAllPoints: true
+//        ControlsGalleryApplication {
+//            anchors.fill: parent
+//            anchors.leftMargin: parent.width*0.6
+//        }
+        TabView {
+            id: tabView
+
             anchors.fill: parent
-            anchors.leftMargin: parent.width*0.4
-            textColor: "black"
-            code:
-"Presentation {\n" +
-"    // Slide Master\n" +
-"    Rectangle {\n" +
-"        anchors.fill: parent\n" +
-"        color: \"white\"\n" +
-"        SlideCounter {\n" +
-"            anchors.right: parent.right\n" +
-"            anchors.bottom: parent.bottom\n" +
-"        }\n" +
-"    }\n" +
-"    Slide {\n" +
-"        title: \""+ parent.title +"\"\n" +
-"        content: [ \""+ parent.content[0] +"\",\n" +
-"                   \""+ parent.content[1] +"\",\n" +
-"                   \""+ parent.content[2] +"\",\n" +
-"                   \""+ parent.content[3] +"\",\n" +
-"                   \""+ parent.content[4] +"\" ]\n" +
-"    }\n" +
-"    Slide { ... }\n" +
-"    Slide { ... }\n" +
-"    ...\n" +
-"}"
+            anchors.leftMargin: parent.width*0.3
+            anchors.rightMargin: parent.width*0.3
+            currentIndex: slideMockUp.currentStep
+            Tab {
+                title: "Buttons"
+                ButtonPage {
+                    enabled: true// enabler.checked
+                }
+            }
+            Tab {
+                title: "Progress"
+                ProgressPage {
+                    enabled: true// enabler.checked
+                }
+            }
+            Tab {
+                title: "Input"
+                InputPage {
+                    enabled: true// enabler.checked
+                }
+            }
+        }
+        function advanceStep() {
+            return currentStep < 2;
         }
     }
+
+//    Slide {
+//        id: slideObtain
+//        title: "Where can I get it?"//"Where to obtain"
+//        // I found the qml presentation framework in the qt-labs folder last year, this is not the case anymore you can obtain it from github now.
+//        // I even have my own fork where I basically added some components for reuse. I will come to them later.
+//        centeredText: "https://github.com/qt-labs/qml-presentation-system\n\nhttps://github.com/dabulla/qml-presentation-system"
+//    }
+
+//    Slide {
+//        id: slideWhat
+//        title: "What you get"
+//        // What you basically get is the two classes "Presentation" and "Slide". "Slide" has implementation for 90% of the slides you will ever need.
+//        // You can show centered text, nested bullet points and even codeblocks with it.
+//        // Bulletpoints is just an array of text which will adapt it's size and wordwrapping automatically.
+//        textFormat: Text.RichText
+//        content: [ "Presentation Component",
+//                   "Slide Component",
+//                   " content, centeredText, ...",
+//                   "Tutorial & Examples",
+//                   "<it>printslides</it> to create PDFs"
+//                   ]
+//        contentWidth: parent.width * 0.35
+//        CodeBlock {
+//            anchors.fill: parent
+//            anchors.leftMargin: parent.width*0.4
+//            textColor: "black"
+//            code:
+//"Presentation {\n" +
+//"    // Slide Master\n" +
+//"    Rectangle {\n" +
+//"        anchors.fill: parent\n" +
+//"        color: \"white\"\n" +
+//"        SlideCounter {\n" +
+//"            anchors.right: parent.right\n" +
+//"            anchors.bottom: parent.bottom\n" +
+//"        }\n" +
+//"    }\n" +
+//"    Slide {\n" +
+//"        title: \""+ parent.title +"\"\n" +
+//"        content: [ \""+ parent.content[0] +"\",\n" +
+//"                   \""+ parent.content[1] +"\",\n" +
+//"                   \""+ parent.content[2] +"\",\n" +
+//"                   \""+ parent.content[3] +"\",\n" +
+//"                   \""+ parent.content[4] +"\" ]\n" +
+//"    }\n" +
+//"    Slide { ... }\n" +
+//"    Slide { ... }\n" +
+//"    ...\n" +
+//"}"
+//        }
+//    }
 
 //    Slide {
 //        id: slideThreeUsecases
@@ -205,11 +253,6 @@ Presentation
 //        }
 //    }
 
-    DatapointSlide {
-        id: slideHeatmaps
-        showCode: true
-    }
-
     Slide {
         id: slideCompQt3D
         // Last year, when I did the presentation for my thesis I wanted to show 3D graphics and so I hacked some basic effects into my presentation using shaders.
@@ -220,13 +263,13 @@ Presentation
         // Also if you have an application written in qml and want to discuss
         // a MockUp with your stakeholders it may be efficient to put the qml of your app into a presentation.
         title: "Qt3D"
-        content: ["Qt3D"]
         delayPoints: true
         showAllPoints: true
         Scene3D {
             id: scene3d
-            anchors.bottom: parent.bottom
-            anchors.left: parent.left
+            anchors.centerIn: parent
+//            anchors.bottom: parent.bottom
+//            anchors.left: parent.left
             width: parent.width * (slideCompQt3D.currentStep === 1 ? 1.0 : 0.33)
             height: slideCompQt3D.currentStep === 1 ? parent.height : Math.min(width, parent.height*0.5)
             z: slideCompQt3D.currentStep === 1
@@ -234,7 +277,7 @@ Presentation
             aspects: ["input", "logic"]
             cameraAspectRatioMode: Scene3D.AutomaticAspectRatio
 
-            AnimatedEntity { vpw: width; vph: height}
+            AnimatedEntity { vpw: width; vph: height }
             Behavior on width {
                 NumberAnimation { duration: 500; easing.type: Easing.InOutQuad }
             }
@@ -248,46 +291,6 @@ Presentation
         function advanceStep() {
 
             return currentStep < 1;
-        }
-    }
-
-    Slide {
-        id: slideMockUp
-        title: "QML Applications"
-        delayPoints: true
-        showAllPoints: true
-//        ControlsGalleryApplication {
-//            anchors.fill: parent
-//            anchors.leftMargin: parent.width*0.6
-//        }
-        TabView {
-            id: tabView
-
-            anchors.fill: parent
-            anchors.leftMargin: parent.width*0.3
-            anchors.rightMargin: parent.width*0.3
-            currentIndex: slideMockUp.currentStep
-            Tab {
-                title: "Buttons"
-                ButtonPage {
-                    enabled: true// enabler.checked
-                }
-            }
-            Tab {
-                title: "Progress"
-                ProgressPage {
-                    enabled: true// enabler.checked
-                }
-            }
-            Tab {
-                title: "Input"
-                InputPage {
-                    enabled: true// enabler.checked
-                }
-            }
-        }
-        function advanceStep() {
-            return currentStep < 2;
         }
     }
 
@@ -311,8 +314,8 @@ Presentation
             anchors.rightMargin: parent.width*0.05
             textColor: "black"
             code:
-                "HorizontalBarSeries {\n" +
-                "    axisY: BarCategoryAxis {\n" +
+                "BarSeries {\n" +
+                "    axisX: BarCategoryAxis {\n" +
                 "       categories: [\"2007\", \"2008\", ... ]\n" +
                 "    }\n" +
                 "    BarSet { label: \"Bob\"; values: [2, 2, 3, 4, 5, 6] }\n" +
@@ -339,7 +342,7 @@ Presentation
         ChartView {
             id: chartView
             title: "Horizontal Bar series"
-            y: -parent.height*0.12
+            y: -parent.height*0.088
             x: parent.width*0.0
             z: slideCompCharts.currentStep === 1
             legend.alignment: Qt.AlignBottom
@@ -348,14 +351,14 @@ Presentation
             Behavior on z {
                 NumberAnimation { duration: 500 }
             }
-            HorizontalBarSeries {
-                axisY: BarCategoryAxis { categories: ["2007", "2008", "2009", "2010", "2011", "2012" ] }
-                axisX: ValueAxis {
+            BarSeries {
+                axisX: BarCategoryAxis { categories: ["2007", "2008", "2009", "2010", "2011", "2012" ] }
+                axisY: ValueAxis {
                     min: 0
                     max: 14
                     minorTickCount: 5
                     minorGridVisible: slideCompCharts.currentStep === 1
-                    tickCount: chartView.width/100
+                    tickCount: chartView.height/100
                 }
                 BarSet { label: "Bob"; values: [2, 2, 3, 4, 5, 6] }
                 BarSet { label: "Susan"; values: [5, 1, 2, 4, 1, 7] }
@@ -421,9 +424,9 @@ Presentation
         }
         ChartView {
             title: "% we learn from..."
-            y: parent.height * 0.3
+            y: parent.height * 0.35
             width: parent.width * 0.4
-            height: parent.height * 0.7
+            height: parent.height * 0.66
             legend.alignment: Qt.AlignBottom
             antialiasing: true
             animationOptions: ChartView.AllAnimations
@@ -432,8 +435,8 @@ Presentation
                 id: pieSeries
                 PieSlice { label: "taste"; value: 3; labelVisible: slideCompCharts.currentStep !== 3 }
                 PieSlice { label: "smell"; value: 3; labelVisible: slideCompCharts.currentStep !== 3 }
-                PieSlice { label: "touch"; value: 6; labelVisible: true; exploded: slideCompCharts.currentStep === 3 }
-                PieSlice { label: "hearing"; value: 13; labelVisible: slideCompCharts.currentStep !== 3 }
+                PieSlice { label: "touch"; value: 6; labelVisible: slideCompCharts.currentStep !== 3 }
+                PieSlice { label: "hearing"; value: 13; labelVisible: true; exploded: slideCompCharts.currentStep === 3 }
                 PieSlice { label: "sight"; value: 75; labelVisible: slideCompCharts.currentStep !== 3 }
             }
         }
@@ -449,6 +452,7 @@ Presentation
 //        // But usually you want to create slides more efficient and create them a lot faster.
 //        // This is possible by reusing components.
 //    }
+    //TODO: Might be two slides, use pictures from Masterthesis
     Slide {
         id: slideComp1
         delayPoints: true
@@ -475,7 +479,7 @@ Presentation
 
     Slide {
         id: slideVr
-        title: "Presentations in virtual spaces"
+        title: "What about virtual reality?"
         content: ["Interact with your presentation on stage",
                   "Haptic communication channel",
                   "Need for new data formats",
@@ -496,5 +500,62 @@ Presentation
     Slide {
         id: slideEnd
         centeredText: "Thanks for your attention"
+    }
+
+    property bool inTransition: false;
+
+    property variant fromSlide
+    property variant toSlide
+
+    property int transitionTime: 500
+
+    SequentialAnimation {
+        id: forwardTransition
+        PropertyAction { target: presentation; property: "inTransition"; value: true }
+        PropertyAction { target: toSlide; property: "visible"; value: true }
+        ParallelAnimation {
+            NumberAnimation { target: fromSlide; property: "opacity"; from: 1; to: 0; duration: deck.transitionTime; easing.type: Easing.OutQuart }
+            NumberAnimation { target: fromSlide; property: "scale"; from: 1; to: 1.01; duration: deck.transitionTime; easing.type: Easing.InOutQuart }
+            NumberAnimation { target: toSlide; property: "opacity"; from: 0; to: 1; duration: deck.transitionTime; easing.type: Easing.InQuart }
+            NumberAnimation { target: toSlide; property: "scale"; from: 0.9; to: 1; duration: deck.transitionTime; easing.type: Easing.InOutQuart }
+        }
+        PropertyAction { target: fromSlide; property: "visible"; value: false }
+        PropertyAction { target: fromSlide; property: "scale"; value: 1 }
+        PropertyAction { target: presentation; property: "inTransition"; value: false }
+    }
+    SequentialAnimation {
+        id: backwardTransition
+        running: false
+        PropertyAction { target: presentation; property: "inTransition"; value: true }
+        PropertyAction { target: toSlide; property: "visible"; value: true }
+        ParallelAnimation {
+            NumberAnimation { target: fromSlide; property: "opacity"; from: 1; to: 0; duration: deck.transitionTime; easing.type: Easing.OutQuart }
+            NumberAnimation { target: fromSlide; property: "scale"; from: 1; to: 0.9; duration: deck.transitionTime; easing.type: Easing.InOutQuart }
+            NumberAnimation { target: toSlide; property: "opacity"; from: 0; to: 1; duration: deck.transitionTime; easing.type: Easing.InQuart }
+            NumberAnimation { target: toSlide; property: "scale"; from: 1.01; to: 1; duration: deck.transitionTime; easing.type: Easing.InOutQuart }
+        }
+        PropertyAction { target: fromSlide; property: "visible"; value: false }
+        PropertyAction { target: fromSlide; property: "scale"; value: 1 }
+        PropertyAction { target: presentation; property: "inTransition"; value: false }
+    }
+
+    function switchSlides(from, to, forward)
+    {
+        if (presentation.inTransition)
+            return false
+
+        from.resetSlide()
+        if(!to.initialized)
+            to.initSlide()
+
+        presentation.fromSlide = from
+        presentation.toSlide = to
+
+        if (forward)
+            forwardTransition.running = true
+        else
+            backwardTransition.running = true
+
+        return true
     }
 }

@@ -12,6 +12,7 @@ Slide {
     fontScale: 0.9
     showBullets: false
     textColor: "white"
+    //TODO: only sho one bullet point
     content: [
         "3D voxelization of heatmap events",
         " 1. Create rectangles",
@@ -294,8 +295,8 @@ Slide {
                     asRect: false
                     width: hmdpSilde.width * 0.1
                     height: hmdpSilde.height * 0.1
-                    x: hmdpSilde.width * 0.74
-                    y: hmdpSilde.height * 0.3
+                    x: hmdpSilde.width * 0.73
+                    y: hmdpSilde.height - hm.height * 0.95
                 }
                 PropertyChanges {
                     target: rotationAnimation

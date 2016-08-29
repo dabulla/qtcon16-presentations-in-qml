@@ -29,10 +29,10 @@ Item {
     Rectangle {
         transform: Rotation { origin.x: 0; origin.y: 0; axis { x: 0; y: 0; z: 1 } angle: -90 }
         gradient: Gradient {
-            GradientStop { position: 0; color: Qt.rgba(0, 177, 172) }
+            GradientStop { position: 0; color: "#5caa15" }
             GradientStop { position: 1; color: "white" }
         }
-        y: parent.height * 0.1
+        y: parent.height * 0.15
         x: 0
         height: parent.width
         width: parent.height / 250
@@ -47,10 +47,10 @@ Item {
     Rectangle {
         transform: Rotation { origin.x: 0; origin.y: 0; axis { x: 0; y: 0; z: 1 } angle: -90 }
         gradient: Gradient {
-            GradientStop { position: 0; color: Qt.rgba(0, 177, 172) }
+            GradientStop { position: 0; color: "#5caa15" }
             GradientStop { position: 1; color: "white" }
         }
-        y: parent.height * 0.9
+        y: parent.height * 0.91
         x: 0
         height: parent.width
         width: parent.height / 250

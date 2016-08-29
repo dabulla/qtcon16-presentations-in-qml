@@ -7,7 +7,7 @@ Slide {
     id: hmdpSilde
     property bool showCode: true
     delayPoints: true
-    title: "Animation and states example"
+    title: "Example"
     contentWidth: parent.width*0.55
     fontScale: 0.9
     showBullets: false

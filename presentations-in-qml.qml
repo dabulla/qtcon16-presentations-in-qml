@@ -87,11 +87,12 @@ Presentation
         // What you basically get is the two classes "Presentation" and "Slide". "Slide" has implementation for 90% of the slides you will ever need.
         // You can show centered text, nested bullet points and even codeblocks with it.
         // Bulletpoints is just an array of text which will adapt it's size and wordwrapping automatically.
-        content: [ "QML Components:",
-                   " Presentation",
-                   " Slide",
+        textFormat: Text.RichText
+        content: [ "Presentation Component",
+                   "Slide Component",
+                   " content, centeredText, ...",
                    "Tutorial & Examples",
-                   "\"printslides\"-Tool to create PDFs"
+                   "<it>printslides</it> to create PDFs"
                    ]
         contentWidth: parent.width * 0.35
         CodeBlock {
@@ -142,67 +143,67 @@ Presentation
     // If you want to present your qml application with this, this may also be the case for you. I heard about people
     // who put there complete application inside the presentation to discuss a prototype or mockup with their stakeholders.
 
-    Slide {
-        id: slideAnimations
-        title: "Doing animations"
-        // And since Qt 5.7 Qt Charts are also available for open source users and can be used in qml
-        CodeBlock {
-            anchors.fill: parent
-            anchors.leftMargin: -parent.width*0.01
-            anchors.bottomMargin: parent.height*0
-            anchors.topMargin: 0
-            anchors.rightMargin: parent.width*0.46
-            textColor: "black"
-            code:
-                "Slide {\n" +
-                "    id: theSlide\n" +
-                "    Image {\n" +
-                "       width: theSlide.width\n" +
-                "           * (theSlide.currentStep === 1 ? 1.0 : 0.5)\n" +
-                "    }\n" +
-                "    Behaviour on width {\n" +
-                "        NumberAnimation {\n" +
-                "            duration: 500\n" +
-                "            easing.type: Easing.InOutQuad\n" +
-                "        }\n" +
-                "    }\n" +
-                "}"
-        }
-        CodeBlock {
-            anchors.fill: parent
-            anchors.leftMargin: parent.width*0.55
-            anchors.topMargin: parent.height*0.0
-            anchors.rightMargin: -parent.width*0.01
-            textColor: "black"
-            code:
-                "states: [\n" +
-                "    State {\n" +
-                "        name: \"fullscreen\"\n" +
-                "        when: theSlide.currentStep === 1\n" +
-                "        PropertyChanges {\n" +
-                "            target: myImage\n" +
-                "            width: theSlide.width\n" +
-                "        }\n" +
-                "    }, ...\n" +
-                "]\n" +
-                "transitions: [\n" +
-                "    Transition {\n" +
-                "        from: \"preview\"\n" +
-                "        to: \"fullscreen\"\n" +
-                "        SequentialAnimation {\n" +
-                "            PauseAnimation { duration: 500 }\n" +
-                "            NumberAnimation {\n" +
-                "                duration: 500\n" +
-                "                target: myImage\n" +
-                "                properties: \"width, height\"\n" +
-                "                easing.type: Easing.InOutQuad\n" +
-                "            }\n" +
-                "        }\n" +
-                "    },\n" +
-                "    ...\n" +
-                "]\n"
-        }
-    }
+//    Slide {
+//        id: slideAnimations
+//        title: "Doing animations"
+//        // And since Qt 5.7 Qt Charts are also available for open source users and can be used in qml
+//        CodeBlock {
+//            anchors.fill: parent
+//            anchors.leftMargin: -parent.width*0.01
+//            anchors.bottomMargin: parent.height*0
+//            anchors.topMargin: 0
+//            anchors.rightMargin: parent.width*0.46
+//            textColor: "black"
+//            code:
+//                "Slide {\n" +
+//                "    id: theSlide\n" +
+//                "    Image {\n" +
+//                "       width: theSlide.width\n" +
+//                "           * (theSlide.currentStep === 1 ? 1.0 : 0.5)\n" +
+//                "    }\n" +
+//                "    Behaviour on width {\n" +
+//                "        NumberAnimation {\n" +
+//                "            duration: 500\n" +
+//                "            easing.type: Easing.InOutQuad\n" +
+//                "        }\n" +
+//                "    }\n" +
+//                "}"
+//        }
+//        CodeBlock {
+//            anchors.fill: parent
+//            anchors.leftMargin: parent.width*0.55
+//            anchors.topMargin: parent.height*0.0
+//            anchors.rightMargin: -parent.width*0.01
+//            textColor: "black"
+//            code:
+//                "states: [\n" +
+//                "    State {\n" +
+//                "        name: \"fullscreen\"\n" +
+//                "        when: theSlide.currentStep === 1\n" +
+//                "        PropertyChanges {\n" +
+//                "            target: myImage\n" +
+//                "            width: theSlide.width\n" +
+//                "        }\n" +
+//                "    }, ...\n" +
+//                "]\n" +
+//                "transitions: [\n" +
+//                "    Transition {\n" +
+//                "        from: \"preview\"\n" +
+//                "        to: \"fullscreen\"\n" +
+//                "        SequentialAnimation {\n" +
+//                "            PauseAnimation { duration: 500 }\n" +
+//                "            NumberAnimation {\n" +
+//                "                duration: 500\n" +
+//                "                target: myImage\n" +
+//                "                properties: \"width, height\"\n" +
+//                "                easing.type: Easing.InOutQuad\n" +
+//                "            }\n" +
+//                "        }\n" +
+//                "    },\n" +
+//                "    ...\n" +
+//                "]\n"
+//        }
+//    }
 
     DatapointSlide {
         id: slideHeatmaps
@@ -218,7 +219,7 @@ Presentation
         // to put it in a presentations and step through your frontend while talking.
         // Also if you have an application written in qml and want to discuss
         // a MockUp with your stakeholders it may be efficient to put the qml of your app into a presentation.
-        title: "New frameworks and components we can use"
+        title: "Qt3D"
         content: ["Qt3D"]
         delayPoints: true
         showAllPoints: true
@@ -252,7 +253,7 @@ Presentation
 
     Slide {
         id: slideMockUp
-        title: "QML Applications in Presentations"
+        title: "QML Applications"
         delayPoints: true
         showAllPoints: true
 //        ControlsGalleryApplication {
@@ -299,7 +300,7 @@ Presentation
         // to put it in a presentations and step through your frontend while talking.
         // Also if you have an application written in qml and want to discuss
         // a MockUp with your stakeholders it may be efficient to put the qml of your app into a presentation.
-        title: "New frameworks and components we can use"
+        title: "Charts"
         delayPoints: true
         showAllPoints: true
         CodeBlock {
@@ -477,7 +478,7 @@ Presentation
         title: "Presentations in virtual spaces"
         content: ["Interact with your presentation on stage",
                   "Haptic communication channel",
-                  "Need for new dataformats",
+                  "Need for new data formats",
                   " Basic programmability",
                   " Still efficient to create slides" ]
         Image {

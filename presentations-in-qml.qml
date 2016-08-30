@@ -25,17 +25,18 @@ Presentation
     }
 
     property var sections: [
-        [ slideTitle ],
-        [ slideAdvantages, slideObtain, slideWhat ],
-        [ /*slideAnimations,*/ slideHeatmaps, slideCompQt3D, slideMockUp, slideCompCharts, slideComp1 ],
+        //[ slideTitle ],
+        [ slideAdvantages, /*slideObtain, slideWhat*/ ],
+        [ slideHeatmaps ],
+        [ /*slideAnimations,*/ slideMockUp, slideCompQt3D, slideCompCharts, slideComp1 ],
         [ slideVr, slideEnd ]
     ]
 
     property var sectionHeaders: [
         "Intro",
-        "Basics",
+        "Example",
         "Use Cases",
-        "End",
+        "End"
     ]
 
     Slide {
@@ -313,6 +314,7 @@ Presentation
             anchors.topMargin: chartView.y*0.5
             anchors.rightMargin: parent.width*0.05
             textColor: "black"
+            opacity: slideCompCharts.currentStep >= 4
             code:
                 "BarSeries {\n" +
                 "    axisX: BarCategoryAxis {\n" +
@@ -322,6 +324,12 @@ Presentation
                 "    BarSet { label: \"Susan\"; values: [5, 1, 2, 4, 1, 7] }\n" +
                 "    BarSet { label: \"James\"; values: [3, 5, 8, 13, 5, 8] }\n" +
                 "}"
+            Behavior on opacity {
+                SequentialAnimation {
+                    PauseAnimation { duration: 500 }
+                    NumberAnimation { duration: 500; easing.type: Easing.InOutQuart }
+                }
+            }
         }
         CodeBlock {
             anchors.fill: parent
@@ -329,20 +337,28 @@ Presentation
             anchors.topMargin: parent.height*0.5
             anchors.rightMargin: parent.width*0.05
             textColor: "black"
+            opacity: slideCompCharts.currentStep >= 4
             code:
-                "HorizontalBarSeries {\n" +
-                "    axisY: BarCategoryAxis {\n" +
-                "       categories: [\"2007\", \"2008\", ... ]\n" +
+                "PieSeries {\n" +
+                "    PieSlice { label: \"taste\"; value: 3 }\n" +
+                "    PieSlice { label: \"smell\"; value: 3 }\n" +
+                "    PieSlice { label: \"touch\"; value: 6 }\n" +
+                "    PieSlice { label: \"hearing\"; value: 13\n" +
+                "        exploded: slide.currentStep >= 3\n" +
                 "    }\n" +
-                "    BarSet { label: \"Bob\"; values: [2, 2, 3, 4, 5, 6] }\n" +
-                "    BarSet { label: \"Susan\"; values: [5, 1, 2, 4, 1, 7] }\n" +
-                "    BarSet { label: \"James\"; values: [3, 5, 8, 13, 5, 8] }\n" +
+                "    PieSlice { label: \"sight\"; value: 75 }\n" +
                 "}"
+            Behavior on opacity {
+                SequentialAnimation {
+                    PauseAnimation { duration: 500 }
+                    NumberAnimation { duration: 500; easing.type: Easing.InOutQuart }
+                }
+            }
         }
         ChartView {
             id: chartView
-            title: "Horizontal Bar series"
-            y: -parent.height*0.088
+            title: "Bar series"
+            y: -parent.height*0.086
             x: parent.width*0.0
             z: slideCompCharts.currentStep === 1
             legend.alignment: Qt.AlignBottom
@@ -367,7 +383,7 @@ Presentation
             states: [
                 State {
                     name: "fullscreen"
-                    when: slideCompCharts.currentStep === 1
+                    when: slideCompCharts.currentStep === 0
                     PropertyChanges {
                         target: chartView
                         x: 0
@@ -377,7 +393,7 @@ Presentation
                 },
                 State {
                     name: "preview"
-                    when: slideCompCharts.currentStep !== 1
+                    when: slideCompCharts.currentStep !== 0
                     PropertyChanges {
                         target: chartView
                         x: slideCompCharts.width * 0.0
@@ -424,24 +440,35 @@ Presentation
         }
         ChartView {
             title: "% we learn from..."
-            y: parent.height * 0.35
-            width: parent.width * 0.4
-            height: parent.height * 0.66
+            y: slideCompCharts.currentStep <= 3 ? 0 : parent.height * 0.35
+            z: 5
+            width: slideCompCharts.currentStep <= 3 ? parent.width : parent.width * 0.4
+            height: slideCompCharts.currentStep <= 3 ? parent.height : parent.height * 0.66
             legend.alignment: Qt.AlignBottom
             antialiasing: true
-            animationOptions: ChartView.AllAnimations
+            animationOptions: slideCompCharts.currentStep == 2 ? ChartView.AllAnimations : ChartView.NoAnimation
+            opacity: slideCompCharts.currentStep >= 2
 
             PieSeries {
                 id: pieSeries
-                PieSlice { label: "taste"; value: 3; labelVisible: slideCompCharts.currentStep !== 3 }
-                PieSlice { label: "smell"; value: 3; labelVisible: slideCompCharts.currentStep !== 3 }
-                PieSlice { label: "touch"; value: 6; labelVisible: slideCompCharts.currentStep !== 3 }
-                PieSlice { label: "hearing"; value: 13; labelVisible: true; exploded: slideCompCharts.currentStep === 3 }
-                PieSlice { label: "sight"; value: 75; labelVisible: slideCompCharts.currentStep !== 3 }
+                PieSlice { label: "taste"; value: 3; labelVisible: slideCompCharts.currentStep < 3 }
+                PieSlice { label: "smell"; value: 3; labelVisible: slideCompCharts.currentStep < 3 }
+                PieSlice { label: "touch"; value: 6; labelVisible: slideCompCharts.currentStep < 3 }
+                PieSlice { label: "hearing"; value: 13; labelVisible: true; exploded: slideCompCharts.currentStep >= 3 }
+                PieSlice { label: "sight"; value: 75; labelVisible: slideCompCharts.currentStep < 3 }
+            }
+            Behavior on y {
+                NumberAnimation { duration: 500; easing.type: Easing.InOutQuart }
+            }
+            Behavior on width {
+                NumberAnimation { duration: 500; easing.type: Easing.InOutQuart }
+            }
+            Behavior on height {
+                NumberAnimation { duration: 500; easing.type: Easing.InOutQuart }
             }
         }
         function advanceStep() {
-            return currentStep < 3;
+            return currentStep < 4;
         }
     }
 
@@ -463,17 +490,32 @@ Presentation
         ImageStepCompare {
             id: imgCol
             anchors.fill: parent
-            anchors.leftMargin: parent.width*0.6
-            sources: [ ep.path + "images/surfel_circle2.png",
-                       ep.path + "images/surfel_ellipse2.png",
-                       ep.path + "images/surfel_raycast2.png" ]
-            alignments: [Image.AlignBottom, Image.AlignBottom, Image.AlignBottom]
+            anchors.leftMargin: parent.width*0.5
+            anchors.topMargin: -parent.height*0.07
+            anchors.bottomMargin: -parent.height*0.005
+            sources: [ ep.path + "images/comp-color.png",
+                       ep.path + "images/comp-heat.png",
+                       ep.path + "images/comp-localmax3.png" ]//,
+                       //ep.path + "images/comp-maxint.png" ]
+            alignments: [Image.AlignVCenter, Image.AlignVCenter, Image.AlignVCenter, Image.AlignVCenter]
             // zoom out after every step by setting "step" to -1.
             // generates: -1,  0, -1,  1, -1,  2, ...
             step: slideComp1.currentStep%2 === 1 ? (slideComp1.currentStep-1)/2 : -1
         }
+        ProgressIndicatorRect {
+            width: parent.width * 0.2
+            height: parent.height * 0.04
+            x: parent.width * 0.1
+            y: parent.height * 0.6
+            opacity: slideComp1.currentStep === imgCol.sources.length*2+2
+            sections: presentation.sections
+            sectionHeaders: presentation.sectionHeaders
+            slides: presentation.slides
+            currentSlide: presentation.currentSlide+slideComp1.currentStep-imgCol.sources.length*2-2
+        }
+
         function advanceStep() {
-            return currentStep < imgCol.sources.length*2+1;
+            return currentStep < imgCol.sources.length*2+2;
         }
     }
 
@@ -502,60 +544,60 @@ Presentation
         centeredText: "Thanks for your attention"
     }
 
-    property bool inTransition: false;
+//    property bool inTransition: false;
 
-    property variant fromSlide
-    property variant toSlide
+//    property variant fromSlide
+//    property variant toSlide
 
-    property int transitionTime: 500
+//    property int transitionTime: 500
 
-    SequentialAnimation {
-        id: forwardTransition
-        PropertyAction { target: presentation; property: "inTransition"; value: true }
-        PropertyAction { target: toSlide; property: "visible"; value: true }
-        ParallelAnimation {
-            NumberAnimation { target: fromSlide; property: "opacity"; from: 1; to: 0; duration: deck.transitionTime; easing.type: Easing.OutQuart }
-            NumberAnimation { target: fromSlide; property: "scale"; from: 1; to: 1.01; duration: deck.transitionTime; easing.type: Easing.InOutQuart }
-            NumberAnimation { target: toSlide; property: "opacity"; from: 0; to: 1; duration: deck.transitionTime; easing.type: Easing.InQuart }
-            NumberAnimation { target: toSlide; property: "scale"; from: 0.9; to: 1; duration: deck.transitionTime; easing.type: Easing.InOutQuart }
-        }
-        PropertyAction { target: fromSlide; property: "visible"; value: false }
-        PropertyAction { target: fromSlide; property: "scale"; value: 1 }
-        PropertyAction { target: presentation; property: "inTransition"; value: false }
-    }
-    SequentialAnimation {
-        id: backwardTransition
-        running: false
-        PropertyAction { target: presentation; property: "inTransition"; value: true }
-        PropertyAction { target: toSlide; property: "visible"; value: true }
-        ParallelAnimation {
-            NumberAnimation { target: fromSlide; property: "opacity"; from: 1; to: 0; duration: deck.transitionTime; easing.type: Easing.OutQuart }
-            NumberAnimation { target: fromSlide; property: "scale"; from: 1; to: 0.9; duration: deck.transitionTime; easing.type: Easing.InOutQuart }
-            NumberAnimation { target: toSlide; property: "opacity"; from: 0; to: 1; duration: deck.transitionTime; easing.type: Easing.InQuart }
-            NumberAnimation { target: toSlide; property: "scale"; from: 1.01; to: 1; duration: deck.transitionTime; easing.type: Easing.InOutQuart }
-        }
-        PropertyAction { target: fromSlide; property: "visible"; value: false }
-        PropertyAction { target: fromSlide; property: "scale"; value: 1 }
-        PropertyAction { target: presentation; property: "inTransition"; value: false }
-    }
+//    SequentialAnimation {
+//        id: forwardTransition
+//        PropertyAction { target: presentation; property: "inTransition"; value: true }
+//        PropertyAction { target: toSlide; property: "visible"; value: true }
+//        ParallelAnimation {
+//            NumberAnimation { target: fromSlide; property: "opacity"; from: 1; to: 0; duration: presentation.transitionTime; easing.type: Easing.OutQuart }
+//            NumberAnimation { target: fromSlide; property: "scale"; from: 1; to: 1.01; duration: presentation.transitionTime; easing.type: Easing.InOutQuart }
+//            NumberAnimation { target: toSlide; property: "opacity"; from: 0; to: 1; duration: presentation.transitionTime; easing.type: Easing.InQuart }
+//            NumberAnimation { target: toSlide; property: "scale"; from: 0.9; to: 1; duration: presentation.transitionTime; easing.type: Easing.InOutQuart }
+//        }
+//        PropertyAction { target: fromSlide; property: "visible"; value: false }
+//        PropertyAction { target: fromSlide; property: "scale"; value: 1 }
+//        PropertyAction { target: presentation; property: "inTransition"; value: false }
+//    }
+//    SequentialAnimation {
+//        id: backwardTransition
+//        running: false
+//        PropertyAction { target: presentation; property: "inTransition"; value: true }
+//        PropertyAction { target: toSlide; property: "visible"; value: true }
+//        ParallelAnimation {
+//            NumberAnimation { target: fromSlide; property: "opacity"; from: 1; to: 0; duration: presentation.transitionTime; easing.type: Easing.OutQuart }
+//            NumberAnimation { target: fromSlide; property: "scale"; from: 1; to: 0.9; duration: presentation.transitionTime; easing.type: Easing.InOutQuart }
+//            NumberAnimation { target: toSlide; property: "opacity"; from: 0; to: 1; duration: presentation.transitionTime; easing.type: Easing.InQuart }
+//            NumberAnimation { target: toSlide; property: "scale"; from: 1.01; to: 1; duration: presentation.transitionTime; easing.type: Easing.InOutQuart }
+//        }
+//        PropertyAction { target: fromSlide; property: "visible"; value: false }
+//        PropertyAction { target: fromSlide; property: "scale"; value: 1 }
+//        PropertyAction { target: presentation; property: "inTransition"; value: false }
+//    }
 
-    function switchSlides(from, to, forward)
-    {
-        if (presentation.inTransition)
-            return false
+//    function switchSlides(from, to, forward)
+//    {
+//        if (presentation.inTransition)
+//            return false
 
-        from.resetSlide()
-        if(!to.initialized)
-            to.initSlide()
+//        //from.resetSlide()
+//        //if(!to.initialized)
+//        //    to.initSlide()
 
-        presentation.fromSlide = from
-        presentation.toSlide = to
+//        presentation.fromSlide = from
+//        presentation.toSlide = to
 
-        if (forward)
-            forwardTransition.running = true
-        else
-            backwardTransition.running = true
+//        if (forward)
+//            forwardTransition.running = true
+//        else
+//            backwardTransition.running = true
 
-        return true
-    }
+//        return true
+//    }
 }

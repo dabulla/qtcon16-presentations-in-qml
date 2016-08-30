@@ -23,7 +23,10 @@ Item {
         sectionHeaders: presentation.sectionHeaders
         slides: presentation.slides
         currentSlide: presentation.currentSlide
-        showText: parent.textUnderIndicator
+        showText: true //parent.textUnderIndicator
+        colorPrevious: "#41cd52"
+        colorCurrent: Qt.darker("#41cd52")
+        colorNext: Qt.lighter("#41cd52")
     }
 
     Rectangle {

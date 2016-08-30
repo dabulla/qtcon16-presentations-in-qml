@@ -1,0 +1,23 @@
+* introduction of myself
+* one question to the audience
+* start story how I came to qml
+* joke about bad animations (?)
+* history of qml presentation framework
+** it was in qtlabs
+** obtain via github
+** there is an internal SlideViewer from KDAB
+* introduce framework itself
+** how basic slides can be made
+** this is actually the whole code of this slide in a working presentation (except for the code-block)
+* 'slick animations' example heatmaps
+** [what can I say during this slide?]
+** I could have done this animation using videos, but I would have to play and pause it multiple times.
+** But videos needed to be rendered anyway, and here I could use parts of my application code.
+* You can use party of the applicationcode from your front end/UI
+** Discuss a prototype of your application with your stakeholders
+* 1,5 yaers ago it was hacky to get 3D in the presentation, now we can use Qt3D
+* We can use Charts
+* It is still effort to do qml presentations at the time
+** they are very powerfull (hopefully I could show that)
+** The presentation might have looked better, if it was easier to create. I wanted to show you everything, the other presentations are an example, that usually your presentations can look a bit more streamlined
+** If we had better tools and more classes and tools, Qml presentations would be even better

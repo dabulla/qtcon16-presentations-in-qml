@@ -43,7 +43,7 @@ Presentation
         id: slideTitle
         //title: "Title & Introduction"
         textFormat: Text.RichText
-        centeredText: "<br><b>Presentations in QML</b><br><br>Daniel Bulla, M. Eng.<br>FH Aachen University of Applied Sciences"
+        centeredText: "<br><br><b>Presentations in QML</b><br><br>Daniel Bulla, M. Eng.<br>MASCOR Institute<br>FH Aachen University of Applied Sciences"
         // Hello my name is Daniel Bulla from FH Aachen University of applied sience and I want to share
         // my experience about creating presentations in qml with you.
         // First I want to ask who knows about the possibility to create presentations in qml?
@@ -82,21 +82,33 @@ Presentation
         showAllPoints: true
         Rectangle {
             anchors.fill: parent
+            anchors.topMargin: -parent.height*0.5
+            anchors.rightMargin: -parent.width*0.5
+            anchors.leftMargin: -parent.width*0.5
+            anchors.bottomMargin: -parent.width*0.005
             gradient: Gradient {
                 GradientStop { position: 0; color: Qt.rgba(1.0, 0.7, 0.7, 1.0); }
                 GradientStop { position: 1; color: Qt.rgba(0.8, 0.8, 1.0, 1.0); }
             }
+        }
+        Image {
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.bottom: parent.top
+            anchors.bottomMargin: -parent.height * 0.05
+            source: ep.path + "images/animations.png"
         }
 
         Flow {
             id: flowFun
             anchors.fill: parent
             anchors.leftMargin: -parent.width*0.5
+            anchors.rightMargin: -parent.width*2.5
+            anchors.topMargin: parent.height * 0.1
             property real finalX: -anchors.leftMargin+parent.width*0.1
             flow: Flow.TopToBottom
             Text {
                 x: slideFunny.currentStep === 0 ? 0 : flowFun.finalX
-                text: "* I'm a bullet point"
+                text: "• I'm a bullet point"
                 font.pixelSize: slideFunny.fontSize
                 Behavior on x {
                     SequentialAnimation {
@@ -106,49 +118,49 @@ Presentation
                 }
             }
             Text {
-                x: slideFunny.currentStep === 0 ? 0 : flowFun.finalX
-                text: "* look at me"
+                x: slideFunny.currentStep === 1 ? flowFun.finalX : flowFun.finalX
+                text: "• look at me"
                 font.pixelSize: slideFunny.fontSize
                 Behavior on x {
                     SequentialAnimation {
                         PauseAnimation { duration: 1000 }
-                        NumberAnimation { duration: 500 }
+                        NumberAnimation { duration: 800 }
                     }
                 }
             }
             Text {
-                text: "* I can fly"
+                text: "• I can fly"
                 font.pixelSize: slideFunny.fontSize
                 x: slideFunny.currentStep === 0 ? 0 : flowFun.finalX
                 Behavior on x {
                     SequentialAnimation {
                         PauseAnimation { duration: 1700 }
-                        NumberAnimation { duration: 500 }
+                        NumberAnimation { duration: 900 }
                     }
                 }
             }
             Text {
                 x: slideFunny.currentStep === 0 ? 0 : flowFun.finalX
-                text: "* VERY IMPORTANT"
+                text: "• VERY IMPORTANT"
                 font.pixelSize: slideFunny.fontSize
                 opacity: timerFun.toggled
                 Behavior on x {
                     SequentialAnimation {
                         PauseAnimation { duration: 2300 }
-                        NumberAnimation { duration: 500 }
+                        NumberAnimation { duration: 1400 }
                     }
                 }
             }
             Text {
                 x: slideFunny.currentStep === 0 ? 0 : flowFun.finalX
-                text: "* VERY IMPORTANT"
+                text: "• Rotation"
                 font.pixelSize: slideFunny.fontSize
                 transform: Rotation
                 {
                     angle: slideFunny.currentStep === 0 ? 0 : 360
                     Behavior on angle {
                         SequentialAnimation {
-                            PauseAnimation { duration: 3000 }
+                            PauseAnimation { duration: 3300 }
                             NumberAnimation { duration: 1500 }
                         }
                     }

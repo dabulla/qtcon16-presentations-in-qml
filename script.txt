@@ -1,0 +1,31 @@
+1. Hello my name is Daniel Bulla and I want to share my experience with presentations in QML with you.
+   First I want to ask who knows that the possibility exists to make slides using qml? And who already did a presentation in qml?
+   - I think at the moment presentations in qml are a bit experimental with only a small community and I
+   really wish that would change in the future, because it is an awesome technology for creating slides.
+   So how did I came in contact with qml for presentations. One and a half year ago I did my master degree and wrote a bunch of text in LaTeX.
+   I finished it, printed it and still had two weeks to prepare a presentation for my professor.
+2. It was obvious that I could use Latex for my presentation but my professor is a very visual type of person.
+   For example she wants a video in every presentation, lot of pictures are great.
+   And I personally wanted to have some slick animations to help me to give an understanding of what my algorithms do.
+   Don't understand me wrong, I want "slick" animations and nothing like these...
+3. So you can do animations in powerpoint, but it's hard do make them precise and to use them on at the right spots.
+   I will show you what I mean later, but lets start at the beginning.
+4. You can get a presentation framework on github, which formely was also included in the qt-labs.
+   And there is my fork, which basically has some components I created for my own reuse, but you are free to use them too.
+   And I added the ability for slides to have multiple states
+5. What you get is two classes, the Presentations class, and the Slides class, and the slides class will
+   contain implementation for 90% of all slides you ever need, e.g. bulletpoints. So I talked about slick animations and brought an example,
+   it's from my master thesis whch is in the topic of computergraphics and what you will see is the voxelisation of a 3dimensional normaldistributions.
+7. When you see this slide you hopefully get a very good idea of what my algorithm is doing.
+   I render this geometry to do the voxelisation.
+   It can be optimized by cutting the corners.
+   The final datapoint looks like this. And muliple of these get rendered into a shared 3D Texture which looks like this.
+   When appliying a transferefunction it might look like one of these images.
+   I could have done this with videos and play and pause it multiple times.
+   But the videos would have to be made anyway and I think this is a way smarter. I could even copy paste some of my applicationcode into the presentation.
+   Of course I chose the most colorfull animations from my application to impress this professor.
+   But if a had a professor, which is absolutly fascinated about UI design, I might have use such a slide.
+8. This is a great example of how you can put your qml application into slides and step through them one by one to discuss a prototyp with you stakeholders.
+9. One and a half year ago it was a bit hard to get 3D into 2D Presentation but since we now have Qt3D this becomes a lot easier for slides.
+10.Since 5.7 QtCharts is available for opensource developers. And Charts are also animated. I was suprised about how few lines of code are needed to embed such a chart.
+11. What about vitual reality, everyone is doing vr at the moment. I think this is going to be importent in the future and some of us might do presentations in these virtual rooms. So I think we don't want to be restricted by this 2d rectangle and need dataformats, which support basic interactivity. E.g have a 3D Molecule in front of me and point at imporant parts of the structure.

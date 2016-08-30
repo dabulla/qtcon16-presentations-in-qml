@@ -76,6 +76,165 @@ Presentation
         // or something.
     }
 
+    Slide {
+        id: slideFunny
+        delayPoints: true
+        showAllPoints: true
+        Rectangle {
+            anchors.fill: parent
+            gradient: Gradient {
+                GradientStop { position: 0; color: Qt.rgba(1.0, 0.7, 0.7, 1.0); }
+                GradientStop { position: 1; color: Qt.rgba(0.8, 0.8, 1.0, 1.0); }
+            }
+        }
+
+        Flow {
+            id: flowFun
+            anchors.fill: parent
+            anchors.leftMargin: -parent.width*0.5
+            property real finalX: -anchors.leftMargin+parent.width*0.1
+            flow: Flow.TopToBottom
+            Text {
+                x: slideFunny.currentStep === 0 ? 0 : flowFun.finalX
+                text: "* I'm a bullet point"
+                font.pixelSize: slideFunny.fontSize
+                Behavior on x {
+                    SequentialAnimation {
+                        PauseAnimation { duration: 200 }
+                        NumberAnimation { duration: 500 }
+                    }
+                }
+            }
+            Text {
+                x: slideFunny.currentStep === 0 ? 0 : flowFun.finalX
+                text: "* look at me"
+                font.pixelSize: slideFunny.fontSize
+                Behavior on x {
+                    SequentialAnimation {
+                        PauseAnimation { duration: 1000 }
+                        NumberAnimation { duration: 500 }
+                    }
+                }
+            }
+            Text {
+                text: "* I can fly"
+                font.pixelSize: slideFunny.fontSize
+                x: slideFunny.currentStep === 0 ? 0 : flowFun.finalX
+                Behavior on x {
+                    SequentialAnimation {
+                        PauseAnimation { duration: 1700 }
+                        NumberAnimation { duration: 500 }
+                    }
+                }
+            }
+            Text {
+                x: slideFunny.currentStep === 0 ? 0 : flowFun.finalX
+                text: "* VERY IMPORTANT"
+                font.pixelSize: slideFunny.fontSize
+                opacity: timerFun.toggled
+                Behavior on x {
+                    SequentialAnimation {
+                        PauseAnimation { duration: 2300 }
+                        NumberAnimation { duration: 500 }
+                    }
+                }
+            }
+            Text {
+                x: slideFunny.currentStep === 0 ? 0 : flowFun.finalX
+                text: "* VERY IMPORTANT"
+                font.pixelSize: slideFunny.fontSize
+                transform: Rotation
+                {
+                    angle: slideFunny.currentStep === 0 ? 0 : 360
+                    Behavior on angle {
+                        SequentialAnimation {
+                            PauseAnimation { duration: 3000 }
+                            NumberAnimation { duration: 1500 }
+                        }
+                    }
+                }
+                Behavior on x {
+                    SequentialAnimation {
+                        PauseAnimation { duration: 3000 }
+                        NumberAnimation { duration: 1000 }
+                    }
+                }
+            }
+        }
+
+        Timer {
+            property bool toggled: false
+            id: timerFun
+            running: true
+            repeat: true
+            interval: 500
+            onTriggered: {
+                toggled = !toggled;
+            }
+        }
+        function advanceStep() {
+            return currentStep < 2;
+        }
+    }
+
+    Slide {
+        id: slideObtain
+        title: "Where can I get it?"//"Where to obtain"
+        // I found the qml presentation framework in the qt-labs folder last year, this is not the case anymore you can obtain it from github now.
+        // I even have my own fork where I basically added some components for reuse. I will come to them later.
+        centeredText: "https://github.com/qt-labs/qml-presentation-system\n\nhttps://github.com/dabulla/qml-presentation-system"
+    }
+
+    Slide {
+        id: slideWhat
+        title: "What you get"
+        delayPoints: true
+        showAllPoints: true
+        // What you basically get is the two classes "Presentation" and "Slide". "Slide" has implementation for 90% of the slides you will ever need.
+        // You can show centered text, nested bullet points and even codeblocks with it.
+        // Bulletpoints is just an array of text which will adapt it's size and wordwrapping automatically.
+        textFormat: Text.RichText
+        content: [ "Presentation Component",
+                   "Slide Component",
+                   " content, centeredText, ...",
+                   "Tutorial & Examples",
+                   "<it>printslides</it> to create PDFs"
+                   ]
+        contentWidth: parent.width * 0.35
+        CodeBlock {
+            anchors.fill: parent
+            anchors.leftMargin: parent.width*0.4
+            textColor: "black"
+            selectedLine: slideWhat.currentStep == 1 ? 0 : slideWhat.currentStep == 2 ? 10 : slideWhat.currentStep == 3 ? 2 : -1
+            code:
+"Presentation {\n" +
+"    // Slide Master\n" +
+"    Rectangle {\n" +
+"        anchors.fill: parent\n" +
+"        color: \"white\"\n" +
+"        SlideCounter {\n" +
+"            anchors.right: parent.right\n" +
+"            anchors.bottom: parent.bottom\n" +
+"        }\n" +
+"    }\n" +
+"    Slide {\n" +
+"        title: \""+ parent.title +"\"\n" +
+"        content: [ \""+ parent.content[0] +"\",\n" +
+"                   \""+ parent.content[1] +"\",\n" +
+"                   \""+ parent.content[2] +"\",\n" +
+"                   \""+ parent.content[3] +"\",\n" +
+"                   \""+ parent.content[4] +"\" ]\n" +
+"    }\n" +
+"    Slide { ... }\n" +
+"    Slide { ... }\n" +
+"    ...\n" +
+"}"
+        }
+//        function advanceStep() {
+//            return currentStep < 3;
+//        }
+    }
+
     // I brought one example of these animated slides. TODO: Introduce master thesis topic shortly
     DatapointSlide {
         id: slideHeatmaps
@@ -121,58 +280,6 @@ Presentation
             return currentStep < 2;
         }
     }
-
-//    Slide {
-//        id: slideObtain
-//        title: "Where can I get it?"//"Where to obtain"
-//        // I found the qml presentation framework in the qt-labs folder last year, this is not the case anymore you can obtain it from github now.
-//        // I even have my own fork where I basically added some components for reuse. I will come to them later.
-//        centeredText: "https://github.com/qt-labs/qml-presentation-system\n\nhttps://github.com/dabulla/qml-presentation-system"
-//    }
-
-//    Slide {
-//        id: slideWhat
-//        title: "What you get"
-//        // What you basically get is the two classes "Presentation" and "Slide". "Slide" has implementation for 90% of the slides you will ever need.
-//        // You can show centered text, nested bullet points and even codeblocks with it.
-//        // Bulletpoints is just an array of text which will adapt it's size and wordwrapping automatically.
-//        textFormat: Text.RichText
-//        content: [ "Presentation Component",
-//                   "Slide Component",
-//                   " content, centeredText, ...",
-//                   "Tutorial & Examples",
-//                   "<it>printslides</it> to create PDFs"
-//                   ]
-//        contentWidth: parent.width * 0.35
-//        CodeBlock {
-//            anchors.fill: parent
-//            anchors.leftMargin: parent.width*0.4
-//            textColor: "black"
-//            code:
-//"Presentation {\n" +
-//"    // Slide Master\n" +
-//"    Rectangle {\n" +
-//"        anchors.fill: parent\n" +
-//"        color: \"white\"\n" +
-//"        SlideCounter {\n" +
-//"            anchors.right: parent.right\n" +
-//"            anchors.bottom: parent.bottom\n" +
-//"        }\n" +
-//"    }\n" +
-//"    Slide {\n" +
-//"        title: \""+ parent.title +"\"\n" +
-//"        content: [ \""+ parent.content[0] +"\",\n" +
-//"                   \""+ parent.content[1] +"\",\n" +
-//"                   \""+ parent.content[2] +"\",\n" +
-//"                   \""+ parent.content[3] +"\",\n" +
-//"                   \""+ parent.content[4] +"\" ]\n" +
-//"    }\n" +
-//"    Slide { ... }\n" +
-//"    Slide { ... }\n" +
-//"    ...\n" +
-//"}"
-//        }
-//    }
 
 //    Slide {
 //        id: slideThreeUsecases

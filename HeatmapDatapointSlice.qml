@@ -176,7 +176,7 @@ Item {
 
             float normDist(float s, float var)
             {
-                float exponent = -pow(s,2.0)/(2*pow(var,2.0));
+                float exponent = -pow(s,2.0)/(2.0*pow(var,2.0));
                 return (1.0/(var*sqrt2Pi))*pow(e,exponent);
             }
 

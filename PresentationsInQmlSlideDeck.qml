@@ -80,12 +80,14 @@ Presentation
         id: slideFunny
         delayPoints: true
         showAllPoints: true
+        title: slideFunny.currentStep >= 3 ? "" : "Animations"
         Rectangle {
             anchors.fill: parent
             anchors.topMargin: -parent.height*0.5
             anchors.rightMargin: -parent.width*0.5
             anchors.leftMargin: -parent.width*0.5
             anchors.bottomMargin: -parent.width*0.005
+            visible: slideFunny.currentStep >= 2
             gradient: Gradient {
                 GradientStop { position: 0; color: Qt.rgba(1.0, 0.7, 0.7, 1.0); }
                 GradientStop { position: 1; color: Qt.rgba(0.8, 0.8, 1.0, 1.0); }
@@ -95,7 +97,9 @@ Presentation
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottom: parent.top
             anchors.bottomMargin: -parent.height * 0.05
+            visible: slideFunny.currentStep >= 3
             source: ep.path + "images/animations.png"
+            z: 10
         }
 
         Flow {
@@ -110,6 +114,16 @@ Presentation
                 x: slideFunny.currentStep === 0 ? 0 : flowFun.finalX
                 text: "• I'm a bullet point"
                 font.pixelSize: slideFunny.fontSize
+                transform: Rotation
+                {
+                    angle: slideFunny.currentStep === 0 ? 0 : 360
+                    Behavior on angle {
+                        SequentialAnimation {
+                            PauseAnimation { duration: 200 }
+                            NumberAnimation { duration: 1500 }
+                        }
+                    }
+                }
                 Behavior on x {
                     SequentialAnimation {
                         PauseAnimation { duration: 200 }
@@ -118,9 +132,19 @@ Presentation
                 }
             }
             Text {
-                x: slideFunny.currentStep === 1 ? flowFun.finalX : flowFun.finalX
+                x: slideFunny.currentStep === 0 ? 0 : flowFun.finalX
                 text: "• look at me"
                 font.pixelSize: slideFunny.fontSize
+                transform: Rotation
+                {
+                    angle: slideFunny.currentStep === 0 ? 0 : 360
+                    Behavior on angle {
+                        SequentialAnimation {
+                            PauseAnimation { duration: 1000 }
+                            NumberAnimation { duration: 1500 }
+                        }
+                    }
+                }
                 Behavior on x {
                     SequentialAnimation {
                         PauseAnimation { duration: 1000 }
@@ -132,6 +156,16 @@ Presentation
                 text: "• I can fly"
                 font.pixelSize: slideFunny.fontSize
                 x: slideFunny.currentStep === 0 ? 0 : flowFun.finalX
+                transform: Rotation
+                {
+                    angle: slideFunny.currentStep === 0 ? 0 : 360
+                    Behavior on angle {
+                        SequentialAnimation {
+                            PauseAnimation { duration: 1700 }
+                            NumberAnimation { duration: 1500 }
+                        }
+                    }
+                }
                 Behavior on x {
                     SequentialAnimation {
                         PauseAnimation { duration: 1700 }
@@ -144,6 +178,16 @@ Presentation
                 text: "• VERY IMPORTANT"
                 font.pixelSize: slideFunny.fontSize
                 opacity: timerFun.toggled
+                transform: Rotation
+                {
+                    angle: slideFunny.currentStep === 0 ? 0 : 360
+                    Behavior on angle {
+                        SequentialAnimation {
+                            PauseAnimation { duration: 2300 }
+                            NumberAnimation { duration: 1500 }
+                        }
+                    }
+                }
                 Behavior on x {
                     SequentialAnimation {
                         PauseAnimation { duration: 2300 }
@@ -153,7 +197,7 @@ Presentation
             }
             Text {
                 x: slideFunny.currentStep === 0 ? 0 : flowFun.finalX
-                text: "• Rotation"
+                text: "• look at me"
                 font.pixelSize: slideFunny.fontSize
                 transform: Rotation
                 {
@@ -185,16 +229,18 @@ Presentation
             }
         }
         function advanceStep() {
-            return currentStep < 2;
+            return currentStep < 3;
         }
     }
 
     Slide {
-        id: slideObtain
-        title: "Where can I get it?"//"Where to obtain"
-        // I found the qml presentation framework in the qt-labs folder last year, this is not the case anymore you can obtain it from github now.
-        // I even have my own fork where I basically added some components for reuse. I will come to them later.
-        centeredText: "https://github.com/qt-labs/qml-presentation-system\n\nhttps://github.com/dabulla/qml-presentation-system"
+        id: slideExecute
+        title: "Starting a Presentation"
+        content: ["Work based on qt-labs \"qml-presentation-system\"",
+                  "Small C++ Programm needed",
+                  " QQuickView",
+                  "Or just use qmlscene program",
+                  " qmlscene MySlideDeck.qml"]
     }
 
     Slide {
@@ -210,14 +256,14 @@ Presentation
                    "Slide Component",
                    " content, centeredText, ...",
                    "Tutorial & Examples",
-                   "<it>printslides</it> to create PDFs"
+                   "printslides to create PDFs"
                    ]
         contentWidth: parent.width * 0.35
         CodeBlock {
             anchors.fill: parent
             anchors.leftMargin: parent.width*0.4
             textColor: "black"
-            selectedLine: slideWhat.currentStep == 1 ? 0 : slideWhat.currentStep == 2 ? 10 : slideWhat.currentStep == 3 ? 2 : -1
+            //selectedLine: slideWhat.currentStep == 1 ? 0 : slideWhat.currentStep == 2 ? 10 : slideWhat.currentStep == 3 ? 2 : -1
             code:
 "Presentation {\n" +
 "    // Slide Master\n" +
@@ -431,11 +477,13 @@ Presentation
             anchors.leftMargin: parent.width*0.4
             anchors.bottomMargin: parent.height*0.6
             anchors.topMargin: chartView.y*0.5
-            anchors.rightMargin: parent.width*0.05
+            anchors.rightMargin: -parent.width*0.015
             textColor: "black"
             opacity: slideCompCharts.currentStep >= 4
             code:
-                "BarSeries {\n" +
+                "ChartView {" +
+                "  title: \"Bar series\"\n" +
+                "  BarSeries {\n" +
                 "    axisX: BarCategoryAxis {\n" +
                 "       categories: [\"2007\", \"2008\", ... ]\n" +
                 "    }\n" +
@@ -454,11 +502,14 @@ Presentation
             anchors.fill: parent
             anchors.leftMargin: parent.width*0.4
             anchors.topMargin: parent.height*0.5
-            anchors.rightMargin: parent.width*0.05
+            anchors.rightMargin: -parent.width*0.015
             textColor: "black"
             opacity: slideCompCharts.currentStep >= 4
             code:
-                "PieSeries {\n" +
+                "ChartView {\n" +
+                "  title: \"% we learn from...\"\n" +
+                "  animationOptions: ChartView.AllAnimations\n" +
+                "  PieSeries {\n" +
                 "    PieSlice { label: \"taste\"; value: 3 }\n" +
                 "    PieSlice { label: \"smell\"; value: 3 }\n" +
                 "    PieSlice { label: \"touch\"; value: 6 }\n" +
@@ -466,6 +517,7 @@ Presentation
                 "        exploded: slide.currentStep >= 3\n" +
                 "    }\n" +
                 "    PieSlice { label: \"sight\"; value: 75 }\n" +
+                "  }\n" +
                 "}"
             Behavior on opacity {
                 SequentialAnimation {
@@ -560,8 +612,9 @@ Presentation
         ChartView {
             title: "% we learn from..."
             y: slideCompCharts.currentStep <= 3 ? 0 : parent.height * 0.35
+            x: slideCompCharts.currentStep <= 3 ? parent.width*0.4 : 0
             z: 5
-            width: slideCompCharts.currentStep <= 3 ? parent.width : parent.width * 0.4
+            width: slideCompCharts.currentStep <= 3 ? parent.width*0.6 : parent.width * 0.4
             height: slideCompCharts.currentStep <= 3 ? parent.height : parent.height * 0.66
             legend.alignment: Qt.AlignBottom
             antialiasing: true
@@ -575,6 +628,9 @@ Presentation
                 PieSlice { label: "touch"; value: 6; labelVisible: slideCompCharts.currentStep < 3 }
                 PieSlice { label: "hearing"; value: 13; labelVisible: true; exploded: slideCompCharts.currentStep >= 3 }
                 PieSlice { label: "sight"; value: 75; labelVisible: slideCompCharts.currentStep < 3 }
+            }
+            Behavior on x {
+                NumberAnimation { duration: 500; easing.type: Easing.InOutQuart }
             }
             Behavior on y {
                 NumberAnimation { duration: 500; easing.type: Easing.InOutQuart }
@@ -638,24 +694,42 @@ Presentation
         }
     }
 
+//    Slide {
+//        id: slideVr
+//        title: "What about virtual reality?"
+//        content: ["Interact with your presentation on stage",
+//                  "Haptic communication channel",
+//                  "Need for new data formats",
+//                  " Basic programmability",
+//                  " Still efficient to create slides" ]
+//        Image {
+//            anchors.right: parent.right
+//            anchors.bottom: parent.bottom
+//            width: parent.width * 0.4
+//            height: parent.height * 0.8
+//            fillMode: Image.PreserveAspectFit
+//            smooth: true
+//            mipmap: false
+//            source: ep.path + "images/presentation-vr-altspacevr.png"
+//        }
+//    }
+
     Slide {
-        id: slideVr
-        title: "What about virtual reality?"
-        content: ["Interact with your presentation on stage",
-                  "Haptic communication channel",
-                  "Need for new data formats",
-                  " Basic programmability",
-                  " Still efficient to create slides" ]
-        Image {
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
-            width: parent.width * 0.4
-            height: parent.height * 0.8
-            fillMode: Image.PreserveAspectFit
-            smooth: true
-            mipmap: false
-            source: ep.path + "images/presentation-vr-altspacevr.png"
-        }
+        id: slideResume
+    title: "Bottom line"
+        content: ["lots of possibilities",
+                  "takes lot of effort",
+                  "more/better components for slides needed",
+                  "more advanced tools"
+                  "demand for KDAB SlideViewer?"]
+    }
+
+    Slide {
+        id: slideObtain
+        title: "Where can I get it?"//"Where to obtain"
+        // I found the qml presentation framework in the qt-labs folder last year, this is not the case anymore you can obtain it from github now.
+        // I even have my own fork where I basically added some components for reuse. I will come to them later.
+        centeredText: "https://github.com/qt-labs/qml-presentation-system\n\nhttps://github.com/dabulla/qml-presentation-system"
     }
 
     Slide {

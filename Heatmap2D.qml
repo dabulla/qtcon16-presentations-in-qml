@@ -148,7 +148,7 @@ Item {
             {
                 if(intensity <= 0.01 || intensity >= 0.98) return 0.0;
                 highp float scale = 1.0/contoursInterval;
-                intensity *= scale;
+                intensity = intensity * scale;
 
                 highp float widthNoCorrectionFactor; // needed to increase/decrease width when it is not corrected/set to contourWidth
                 highp float gradientLen;  // the gradient len for correction or 1.0 if correction is off
@@ -162,7 +162,7 @@ Item {
                 }
                 else
                 {
-                    if(0 > intensity - 1e-9)
+                    if(0.0 > (intensity - 0.0001))
                     {
                         gradientLen = 0.0;
                     }

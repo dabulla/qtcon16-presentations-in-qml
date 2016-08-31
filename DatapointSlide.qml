@@ -23,10 +23,13 @@ Slide {
         " 5. Transferfunction"
     ]
     Rectangle {
-        anchors.margins: -parent.height*0.05
         anchors.fill: parent
+        anchors.topMargin: -parent.height*0.07
+        anchors.rightMargin: -parent.width*0.5
+        anchors.leftMargin: -parent.width*0.5
+        anchors.bottomMargin: -parent.width*0.003
         color: "black"
-        z: -1
+        z: -2
     }
 
     CodeBlock {
@@ -39,10 +42,9 @@ Slide {
         title: "datapoint.geom / GLSL"
         textColor: "black"
         code:
-"some\n" +
-"code\n" +
-"about\n" +
-"heatmaps"
+    "layout( points ) in;\n" +
+    "layout( triangle_strip, max_vertices = 60 ) out;\n" +
+    "layout(invocations = 8) in;"
     }
 
     Rectangle {
@@ -372,6 +374,7 @@ Slide {
         //circleAdapt: theSlide.currentBullet == 2
         //circleAdapt: true
         //asRect: true
+        z: -1
     }
     Text {
         id:capHm
@@ -403,6 +406,7 @@ Slide {
         intensityFactor: 0.05
         lowerAlpha: 18.0
         visible: hmdpSilde.currentBullet >= 6
+        z: -1
     }
     Text {
         id:capHm2

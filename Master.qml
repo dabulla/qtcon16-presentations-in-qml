@@ -10,6 +10,11 @@ Item {
         currentSlide: presentation.currentSlide
         startText: ""
     }
+    Rectangle {
+        anchors.fill: parent
+        color: "white"
+    }
+
     //Clock {}
     ProgressIndicator {
         id: progInd
